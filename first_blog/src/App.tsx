@@ -1,6 +1,7 @@
 import React from 'react';
 import { Posts } from './Posts';
 import './App.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -13,6 +14,7 @@ function App() {
         <h1>Blog Posts</h1>
         <Posts />
       </div>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }
