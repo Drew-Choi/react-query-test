@@ -59,9 +59,7 @@ export function PostDetail({ post }: { post: DataTypes }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
-      <button onClick={() => deleteMutation.mutate({ postId: post.id })}>
-        Delete
-      </button>{' '}
+      <button onClick={() => deleteMutation.mutate()}>Delete</button>{' '}
       <button>Update title</button>
       <p>{post.body}</p>
       <h4>Comments</h4>
