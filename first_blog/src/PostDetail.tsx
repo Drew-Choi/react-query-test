@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 async function fetchComments(postId: number) {
@@ -48,6 +48,10 @@ export function PostDetail({ post }: { post: DataTypes }) {
     queryFn: () => fetchComments(post.id),
   });
 
+  const deleteMutation = useMutation<{ postId: number }>({
+    mutationFn: (postId) => deletePost(Number(postId)),
+  });
+
   if (isLoading) return <h3>Loading...</h3>;
 
   if (isError) return <p>Error: {error?.message}</p>;
@@ -55,7 +59,10 @@ export function PostDetail({ post }: { post: DataTypes }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
-      <button>Delete</button> <button>Update title</button>
+      <button onClick={() => deleteMutation.mutate({ postId: post.id })}>
+        Delete
+      </button>{' '}
+      <button>Update title</button>
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data?.map((comment: CommentsType) => (
