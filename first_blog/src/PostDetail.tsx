@@ -59,6 +59,7 @@ export function PostDetail({ post }: { post: DataTypes }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
+      {/* 에러잡는 중 */}
       <button onClick={() => deleteMutation.mutate(post.id)}>
         Delete
       </button>{' '}
