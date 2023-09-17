@@ -48,8 +48,12 @@ export function PostDetail({ post }: { post: DataTypes }) {
     queryFn: () => fetchComments(post.id),
   });
 
-  const deleteMutation = useMutation<{ postId: number }>({
+  const deleteMutation = useMutation<void, unknown, { postId: number }>({
     mutationFn: (postId) => deletePost(Number(postId)),
+  });
+
+  const updateMutation = useMutation<void, unknown, { postId: number }>({
+    mutationFn: (postId) => updatePost(Number(postId)),
   });
 
   if (isLoading) return <h3>Loading...</h3>;
@@ -59,11 +63,30 @@ export function PostDetail({ post }: { post: DataTypes }) {
   return (
     <>
       <h3 style={{ color: 'blue' }}>{post.title}</h3>
-      {/* 에러잡는 중 */}
-      <button onClick={() => deleteMutation.mutate(post.id)}>
+      <button onClick={() => deleteMutation.mutate({ postId: post.id })}>
         Delete
-      </button>{' '}
-      <button>Update title</button>
+      </button>
+      {deleteMutation.isError && (
+        <p style={{ color: 'red' }}>Error deleting the post</p>
+      )}
+      {deleteMutation.isLoading && (
+        <p style={{ color: 'purple' }}>Deleting the Post...</p>
+      )}
+      {deleteMutation.isSuccess && (
+        <p style={{ color: 'green' }}>Post has (not) been deleted</p>
+      )}
+      <button onClick={() => updateMutation.mutate({ postId: post.id })}>
+        Update title
+      </button>
+      {updateMutation.isError && (
+        <p style={{ color: 'red' }}>Error Update the post</p>
+      )}
+      {updateMutation.isLoading && (
+        <p style={{ color: 'purple' }}>Updating...</p>
+      )}
+      {updateMutation.isSuccess && (
+        <p style={{ color: 'green' }}>Update Success!</p>
+      )}
       <p>{post.body}</p>
       <h4>Comments</h4>
       {data?.map((comment: CommentsType) => (
